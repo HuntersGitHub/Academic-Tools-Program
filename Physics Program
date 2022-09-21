@@ -1,0 +1,183 @@
+/* @Name: Hunter Goffnett
+* @Description: Physics Program that
+
+*   a) Updates an the velocity of vehicles in an array.
+
+*   b) Calculates kinetic and potential energy
+
+*   c) Displays Vehicle specs 
+
+*   d) Exits
+*/
+
+​
+
+import java.util.Scanner;
+
+public class main{
+       /** 
+        * calculate height in meters
+        * @param height
+        * @return height in meters
+        */
+       public static double toMeters(double height) {
+           return  height * .3048;         
+       }
+
+        /** 
+        * calculate velocity in meters per second
+        * @param velocity
+        * @return velocity in meters per second
+        */
+       public static double toMS(double velocity) {    
+           return    velocity * .44704; 
+       }
+
+        /** 
+        * calculate kinetic energy
+        * @param  mass
+        * @param velocity
+        * @return kinetic energy
+        */
+       public static double calculateKE(double mass, double velocity) {
+           double ms_vel = toMS(velocity);
+           double ke = (0.5) * mass * (ms_vel * ms_vel);
+           return ke;
+       }
+
+        /** 
+        * calculate potential energy
+        * @param double mass
+        * @param double height
+        * @return potential energy
+        */
+       public static double calculatePE(double mass, double height) {        
+           double pe = mass * 9.8 * toMeters(height);
+           return pe;
+       }
+       
+       /**
+        * Find if a roller coaster exists in the array or not
+        * @param String nameArr
+        * @param i or -1
+        */
+       public static int findRollerCoaster(String [] nameArr) {
+       
+           Scanner sc = new Scanner(System.in);
+           System.out.print("\nEnter a name: ");            
+           String name = sc.nextLine();
+           for (int i = 0; i < nameArr.length; i++) {
+               if (nameArr[i].equals(name)) {
+                   return i;
+               }
+           }
+           System.out.println("\nRoller Coaster does not exist");
+           return -1;
+       }
+       
+       /**
+        * Update the velocity in the array
+        * @param nameArr
+        * @param velocity array
+        */
+       public static void updateVelocity(String [] nameArr, double [] velocityArr) {
+           int result = findRollerCoaster(nameArr);
+           if(result > -1) {
+           System.out.print("Enter the velocity: ");
+           Scanner sc = new Scanner(System.in);
+           velocityArr[result] = sc.nextDouble();
+           System.out.println("The velocity of the " + nameArr[result] + " has been successfully updated to " + velocityArr[result] + " mph.");
+           }
+       }
+       
+       /**
+        * Update the velocity in the array
+        * @param nameArr
+        * @param massArr
+        * @param velocityArr
+        * @param heightArr
+        */
+       public static void calculatePEandKE(String [] nameArr, double [] massArr, double [] velocityArr, double [] heightArr) { 
+           int result = findRollerCoaster(nameArr);
+           if(result > -1) {
+               System.out.printf("Potential Energy: %.1f j", calculatePE(massArr[result], heightArr[result]));
+               System.out.printf("\nKinetic Energy: %.1f j", calculateKE(massArr[result], velocityArr[result]));
+           }
+       }
+       
+       /**
+        * Update the velocity in the array
+        * @param nameArr
+        * @param massArr
+        * @param velocityArr
+        * @param heightArr
+        */
+       public static void displaySpecs(String [] nameArr, double [] massArr, double []    velocityArr, double [] heightArr) {
+           System.out.printf("%-18s%9s %12s %11s %7s %13s\n", "NAME", "MASS", "VEL", "HEIGHT", "PE", "KE");
+           System.out.print("----------------------------------------------------------------------------");
+           for (int i = 0; i < nameArr.length; i++) {
+               System.out.println("");
+               System.out.printf("%-18s %10.1f %10.1f %10.1f %15.1f %15.1f", nameArr[i], massArr[i], velocityArr[i], heightArr[i], calculatePE(massArr[i], heightArr[i]), calculateKE(massArr[i], velocityArr[i]));
+           }
+       }
+
+        
+       public static void main(String[] args) {    
+       
+       //Create scanner
+       Scanner sc = new Scanner(System.in);
+       
+       //Create Array
+       String[] nameArr = {"Dragster", "Millennium Force", "Maverick", "Steel Vengeance"};
+       double [] massArr = {5724, 6208, 5889, 6929};
+       double [] velocityArr = {120, 93, 70, 75};
+       double [] heightArr = {420, 310, 105, 205};
+       
+       //Declaration
+       boolean found = false;
+       
+       char option = ' ';
+       
+           //While for options menu
+           while (option != 'd') {
+               //Print for menu
+               System.out.println("a) Update velocity");
+               System.out.println("b) Calculate KE and PE");
+               System.out.println("c) Display all specifications");
+               System.out.println("d) Exit");
+               System.out.print("\nSelect one of the above options: ");
+               
+               option = sc.next().charAt(0);
+           
+           //Cases
+           switch (option) {
+
+            // Update velocity
+           case 'a':            
+               updateVelocity(nameArr,velocityArr);
+               break;            
+               
+           //Calculate KE and PE
+           case 'b':
+               calculatePEandKE(nameArr, massArr, velocityArr, heightArr);
+               break;
+               
+           //Display all specifications
+           case 'c':
+               displaySpecs(nameArr, massArr, velocityArr, heightArr);
+               break;
+               
+           //Exit
+           case 'd':
+               System.out.println("\nFinished.");
+               break;
+
+            default:
+               System.out.println("\n Invalid option. Please try again.");
+
+            }
+           
+           System.out.println("\n\n");
+           }
+   }
+}
