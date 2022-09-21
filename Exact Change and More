@@ -1,0 +1,201 @@
+/* @Name: Hunter Goffnett
+* @Description: Program that
+
+*   a) Calculates Exact Change
+
+*   b) Prompt the user to enter their first and last name. If their last initial is in the range (a-g) or (t-z) inclusively, display their first
+
+*       name followed by their last initial. If their last initial is not in the range, display their last name followed by their first initial.
+
+*   c) A game that prompts the user to guess three integers. Then, generate three lucky numbers that are random integers in
+
+*       the range, 0-5. For each lucky number that the user guesses correctly, they get a point. If no numbers are guessed
+
+*       correctly they lose. If the user guesses the same number more than once, print an error message.
+*/
+
+
+
+import java.util.Scanner;
+import java.util.Random;
+
+public class main {
+
+    /**
+    * Finds the amount of quarters
+    * @param cents
+    * @return
+    */
+public static int getQuarters(int cents) {
+        return (int) Math.floor(cents / 25.0);
+}
+   /**
+    * Finds the amounts of dimes
+    * @param cents
+    * @return
+    */
+public static int getDimes(int cents) {
+        return (int) Math.floor(cents / 10.0);
+}
+   /** 
+    * Finds the amount of nickels
+    * @param cents
+    * @return
+    */
+public static int getNickels(int cents) {
+        return (int) Math.floor(cents / 5.0);
+}
+   /**
+    * Finds the amount of pennies
+    * @param cents
+    * @return
+    */
+public static int getPennies(int cents) {
+        return (int) Math.floor(cents / 1.0);
+}
+         
+/**
+* Get the index of an array
+* @param array
+* @param value
+* @return
+*/
+public static int indexOf(int[] array, int value){
+   for(int i = 0; i < array.length; i++){
+       if(array[i] == value){
+           return i;
+       }
+   }
+   return -1;
+}
+
+/** 
+*
+* @return
+*/
+public static int func3(){
+   Random rand = new Random();
+   Scanner sc = new Scanner(System.in);
+   int[] array = new int[3];
+   int[] input = new int[3];
+   int score = 0;
+   for(int i = 0; i < 3; i++){
+       array[i] = rand.nextInt(6);
+   }
+   for(int i = 0; i < 3; i++){
+       System.out.printf("Num%d: ", i+1);
+       input[i] = sc.nextInt();
+   }
+   for(int i = 0; i < 3; i++){
+       if(indexOf(array, input[i]) != -1){
+           score++;
+       }
+   }
+   
+   if(input[0] == input[1] || input[0] == input[2] || input[1] == input[2]){
+       System.out.printf("\nERROR: You cannot enter duplicate numbers.");
+       return 0;
+   }
+   
+   System.out.printf("\nThe lucky numbers are " + array[0] + ", " + array[1] + ", " + array[2]);
+   
+   if(score == 0){
+       System.out.printf("\nOoof, better luck next time.");
+   }else{
+       System.out.printf("\n\nCongragulations! Total points: " + score);
+   }
+   return 1;
+}
+
+
+   public static void main(String[] args) {
+           Scanner sc = new Scanner(System.in);
+           Random rand = new Random(); 
+           
+           //Declaring
+           char a, b, c;
+       
+           char operator = 0;
+       
+           int guess, guessTwo, guessThree, change;
+           
+           //print statements
+             System.out.println("a) Exact Change");
+             System.out.println("b) Format Name");
+             System.out.println("c) Lucky Numbers\n");
+             
+             System.out.printf("Select one of the options above: ");
+             operator = sc.next().charAt(0);
+             
+             
+             //Cases
+             switch(operator)  {
+             case 'a':
+                 
+                 //Creating a counter of the change and subrtracting
+                 System.out.printf("\nTotal change: ");
+                 int n = sc.nextInt();
+               
+                 int cents = n;
+                 int left = cents;
+                 
+                 int quarters = getQuarters(cents);
+                 left -= quarters * 25;
+                 
+                 int dimes = getDimes(left);
+                 left -= dimes * 10;
+                 
+                 int nickels = getNickels(left);
+                 left -= nickels * 5;
+                 
+                 int pennies = left;
+                 
+                 // print the output
+                 System.out.println(cents + " cents = " + quarters + " Quarters, " + dimes + " Dimes, " + nickels + " Nickels, and " + pennies + " Pennies."); 
+         
+             
+                 break;
+                 
+             case 'b':
+                 
+                 System.out.print("First Name: ");
+                 String firstName = sc.next();
+                 
+                 System.out.print("Last Name: ");
+                 String lastName = sc.next();
+                 
+                 System.out.println(" ");
+                 
+                 //Creating a range of characters
+                 String range = "abcdefgtuvwxyz";
+                 
+                 //Takes the char value of first letter of the first name string, and makes it lower case
+                 String firstNameInitial = String.valueOf(firstName.charAt(0)).toLowerCase();
+                 
+             //Takes the char value of first letter of the last name string, and makes it lower case
+                 String lastNameInitial = String.valueOf(lastName.charAt(0)).toLowerCase();
+                 
+                 //Checking if the range has the initial of the lower last name
+                 boolean result = range.contains(lastNameInitial);
+                 
+                 //if it does, print first name and last initial. If not, last name, first name initial
+                 if (result) {
+                     System.out.println(firstName + " " + lastNameInitial.toUpperCase() + ".");
+                 } else {
+                     System.out.println(lastName + " " + firstNameInitial.toUpperCase() + '.');
+                 }
+                     
+                 break;
+                 
+             case 'c':
+                 //Calling method for lucky numbers
+                 func3();
+                 break;
+                     
+             default:
+                 System.out.println("Error");
+                 
+                 
+             }
+   }
+}
