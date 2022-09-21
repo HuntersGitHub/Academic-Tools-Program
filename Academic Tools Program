@@ -1,0 +1,201 @@
+/* @Name: Hunter Goffnett
+* @Description: Academic Tool Program that
+
+*   a) Updates class standing of students
+
+*   b) Calculates the best and worst student
+
+*   c) Displays the roster of students
+
+*   d) Exits
+*/
+
+
+
+import java.util.Scanner;
+
+public class main {
+
+    //Method to see get assignments passed
+   public static void assignmentsPassed(double [] arr, double [] arr2, double [] arr3, int i, String globalId) {
+       
+       int counter = 0;
+   
+       if (arr[i] >= 70)
+               counter ++;
+               
+       if (arr2[i] >= 70)
+           counter ++;
+       
+       if (arr3[i] >= 70)
+           counter ++;
+       
+       if (counter > 0) {
+           System.out.println(globalId + " has passed " + counter + " assignments\n");
+       } 
+   }
+   
+   //Method to plug in a score and get the the grade
+   public static char gradeScale(double averageScore) {
+       
+       char averageGrade = 'z';
+               
+       if (averageScore >= 90) {
+           averageGrade = 'A';
+       } else if ((averageScore > 80) && (averageScore <= 89)) {
+           averageGrade = 'B';
+       } else if ((averageScore > 70) && (averageScore <= 79)) {
+           averageGrade = 'C';
+       } else if ((averageScore > 60) && (averageScore <= 69)) {
+                   averageGrade = 'D';
+       } else if ((averageScore < 60)) {
+                   averageGrade = 'E';
+       }
+       return averageGrade;
+       
+   }
+   
+   public static void main(String[] args) {
+       
+       Scanner sc = new Scanner(System.in);
+       
+       //Create Array
+       String[] globalIdArr = {"doe5j", "johnson1d", "jones2a", "brady3t", "mahom1d"};
+       String[] classStandingArr = {"SR", "JR", "SR", "FM", "SM"};
+       double[] assignmentArr1 = { 95.2, 87.1, 66.8, 55.3, 75.4 };
+       double[] assignmentArr2 = { 91.2, 78.4, 75.1, 68.7, 77.0 };
+       double[] assignmentArr3 = { 90.2, 66.9, 88.2, 77.4, 82.3 };
+       
+       //Declaration
+       char option = ' ';
+       
+       boolean found = false;
+       
+       String globalId;
+       
+       String classStanding; 
+       
+       int studentIndex;
+       
+       //While for options menu
+       while (option != 'e') {
+           
+           //Print for menu
+           System.out.println("a) Update class standing");
+           System.out.println("b) Assignments passed");
+           System.out.println("c) Best/worst student");
+           System.out.println("d) Display roster");
+           System.out.println("e) Exit ");
+           System.out.print("\nSelect one of the above options: ");
+
+            option = sc.next().charAt(0);
+           
+           
+           //Cases
+           switch (option) {
+
+            // Update class standing
+           case 'a':
+               
+               System.out.print("Global ID: ");
+               
+               globalId = sc.next();
+               
+               System.out.print("Class standing: ");
+   
+               classStanding = sc.next();
+               
+               found = false;
+
+                for (int i = 0; i < globalIdArr.length; i++) {
+                   if (globalIdArr[i].equals(globalId)) {
+                       classStandingArr[i] = classStanding;
+                       found = true;
+                       System.out.println("\n" + globalIdArr[i] + " has been successfully updated to " + classStanding + "\n");
+                   }
+               }
+               
+               if (!found) {
+                   System.out.printf("\n" + globalId +  " does not exist." + "\n\n");
+               }
+               break;            
+               
+           //Assignments passed
+           case 'b':
+               
+               System.out.print("Global ID: ");
+               
+               globalId = sc.next();    
+               studentIndex = -1;
+               
+               for (int i = 0; i < globalIdArr.length; i++) {
+                   if (globalIdArr[i].equals(globalId)) {
+                       found = true;
+                       studentIndex = i;
+                   }
+               }
+               
+               if (found) {
+                   assignmentsPassed (assignmentArr1,assignmentArr2,assignmentArr3, studentIndex, globalId);
+               }    else {
+                   System.out.print(globalId + " does not exist\n\n");
+               }
+               
+               break;
+               
+           //Best and worst students
+           case 'c':
+               
+               double maxGrade = -999999999;
+               int maxGradeIndex = 0;
+               
+               double minGrade = 99999999;
+               int minGradeIndex = 0;
+               
+               for (int i = 0; i < globalIdArr.length; i++) {
+                   double overall = (assignmentArr1[i] + assignmentArr2[i] + assignmentArr3[i])/3.0;
+                   if (overall > maxGrade) {
+                       maxGrade = overall;
+                       maxGradeIndex = i;
+                   }
+                   if (overall < minGrade) {
+                       minGrade = overall;
+                       minGradeIndex = i;
+                   }
+
+                }
+               
+               System.out.printf("The best student is %s with an overall grade of %.2f", globalIdArr[maxGradeIndex], maxGrade);
+               
+               System.out.printf("\nThe worst student is %s with an overall grade of %.2f\n\n",globalIdArr[minGradeIndex],minGrade);
+               
+               break;
+               
+           //Display Employee Data
+           case 'd':
+               
+               for (int i = 0; i < globalIdArr.length; i++) {
+                   double overall = (assignmentArr1[i] + assignmentArr2[i] + assignmentArr3[i])/3.0;
+                   System.out.printf("ID: %-15s A1: %-10.1f A2: %-10.1f A3: %-10.1f Overall: %.2f = %s\n", globalIdArr[i], assignmentArr1[i], assignmentArr2[i], assignmentArr3[i], overall, gradeScale(overall));
+               }
+               
+               System.out.println(" ");
+               
+           break;
+           
+           //Exit
+           case 'e':
+               System.out.println("Terminated\n");
+               break;
+
+            default:
+               System.out.println("\nInvalid option. Please try again.");
+
+            }
+           
+           //Break
+           System.out.println("----------------------------------------------\n");
+       }
+   }
+}
+ 
